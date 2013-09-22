@@ -1,0 +1,15 @@
+INSTUPBase.match
+C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\match.py
+INFOS:&&3|1|2|0&&3|3|2|0&&1|4|2|0&&2|5|2|4&&3|6|2|7&&2|8|2|4&&2|9|2|4&&3|10|2|11&&2|12|2|4
+update=9
+Base.match=2
+speed=6
+Match=4
+handle_event=8
+ballrect=10
+size=1
+draw=12
+Match.update=11
+__init__=5
+Match.__init__=7
+black=3
