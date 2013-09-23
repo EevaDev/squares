@@ -4,9 +4,7 @@ Created on 2013-09-21
 @author: Davide
 '''
 import pygame
-
-
-black = 255,255,255
+import constants as const
 
 class MenuItem(object):
     def __init__(self, text, font):
@@ -19,7 +17,11 @@ class MenuItem(object):
         self.xCenter = posX
         
     def isClicked(self, pos):
-        if 
+        self.position = self.text.get_rect(centery=self.yCenter, centerx=self.xCenter)
+        if self.position.collidepoint(pos):
+            return True
+        else:
+            return False
         
     def draw(self, screen):
         self.position = self.text.get_rect(centery=self.yCenter, centerx=self.xCenter)
@@ -44,14 +46,19 @@ class StartMenu(object):
         
         
     def handle_event(self, ev):
+        state = const.STATE_MENU
         if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
-            print "CLICK"
+            if self.items[0].isClicked(pygame.mouse.get_pos()):
+                state = const.STATE_PLAY
+            elif self.items[1].isClicked(pygame.mouse.get_pos()):
+                state = const.STATE_EXIT
+        return state
     
     def update(self):
         pass
             
     def draw(self):
-        self.screen.fill(black)
+        self.screen.fill(const.WHITE)
         for item in self.items:
             item.draw(self.screen)
         pygame.display.flip()

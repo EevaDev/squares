@@ -2,13 +2,64 @@
 -- START DISKCACHE
 C:\Users\Davide\Desktop\Python\PyGame\Squares\.metadata\.plugins\org.eclipse.core.resources\.projects\Squares\com.python.pydev.analysis\v1_indexcache
 .v1_indexcache
+Base.match|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\match.py
+Base.main|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\main.py
+Base.start_menu|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\start_menu.py
+Base.__init__|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\__init__.py
+Base.constants|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\constants.py
+Base.utils|0|C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\utils.py
 -- END DISKCACHE
 -- START DICTIONARY
-0
+15
+4=Base.match
+5=Base.start_menu
+6=Match
+7=StartMenu
+14=MenuItem.__init__
+3=Base.utils
+9=Match.update
+15=MenuItem.setPos
+13=Match.__init__
+2=Base.main
+10=StartMenu.__init__
+8=MenuItem
+12=MenuItem.isClicked
+11=MenuItem.draw
+1=Base.constants
 -- END DICTIONARY
 -- START TREE 1
-0
+16
+bla|1|BLACK!11@
+clo|1|clock!19@
+cur|2|CUR_DIR!27@cur_screen!19@
+hei|1|height!19@
+img|1|IMG_DIR!27@
+loa|2|load_sound!26@load_image!26@
+mat|1|Match!33@
+men|1|MenuItem!41@
+old|1|old_state!19@
+scr|1|screen!19@
+sel|0|
+siz|2|size!11@size!19@
+sou|1|SOUND_DIR!27@
+sta|5|STATE_PLAY!11@STATE_MENU!11@state!19@STATE_EXIT!11@StartMenu!41@
+whi|1|WHITE!11@
+wid|1|width!19@
 -- END TREE
 -- START TREE 2
-0
+14
+__i|3|__init__!6&34@__init__!7&42@__init__!8&42@
+bal|1|ballrect!9&35@
+dra|3|draw!6&34@draw!7&42@draw!8&42@
+han|2|handle_event!7&42@handle_event!6&34@
+isc|1|isClicked!8&42@
+ite|1|items!10&43@
+pos|2|position!11&43@position!12&43@
+scr|2|screen!10&43@screen!13&35@
+set|1|setPos!8&42@
+spe|1|speed!13&35@
+tex|1|text!14&43@
+upd|2|update!6&34@update!7&42@
+xce|2|xCenter!15&43@xCenter!14&43@
+yce|2|yCenter!15&43@yCenter!14&43@
 -- END TREE

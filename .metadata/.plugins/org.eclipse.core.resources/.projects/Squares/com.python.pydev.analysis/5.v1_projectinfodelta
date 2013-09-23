@@ -1,1 +1,10 @@
-DELSTRBase.start_menu
+INSTUPBase.main
+C:\Users\Davide\Desktop\Python\PyGame\Squares\Squares\src\Base\main.py
+INFOS:&&3|1|2|0&&3|3|2|0&&3|4|2|0&&3|5|2|0&&3|6|2|0&&3|7|2|0&&3|6|2|0&&3|5|2|0&&3|5|2|0&&3|7|2|0
+screen=3
+Base.main=2
+clock=4
+state=6
+cur_screen=5
+old_state=7
+size=1
