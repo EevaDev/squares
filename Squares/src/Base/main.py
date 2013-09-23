@@ -5,7 +5,7 @@ Created on 2013-09-20
 '''
 import pygame, sys
 import start_menu, match
-import constants as const
+from constants import *
 
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
@@ -20,7 +20,7 @@ if __name__ == '__main__':
     
     clock = pygame.time.Clock()
     cur_screen = start_menu.StartMenu(screen)
-    state = const.STATE_MENU
+    state = STATE_MENU
     old_state = state
      
     while True:
@@ -33,11 +33,11 @@ if __name__ == '__main__':
                 state = cur_screen.handle_event(event)
                 
         if old_state != state:
-            if state == const.STATE_MENU:
+            if state == STATE_MENU:
                 cur_screen = start_menu.StartMenu(screen)
-            elif state == const.STATE_PLAY:
+            elif state == STATE_PLAY:
                 cur_screen = match.Match(screen)
-            elif state == const.STATE_EXIT:
+            elif state == STATE_EXIT:
                 pygame.quit()
                 sys.exit(0)
         old_state = state

@@ -4,8 +4,12 @@ Created on 2013-09-21
 @author: Davide
 '''
 import utils
-import constants as const
 import pygame
+from constants import *
+
+class Square(object):
+    def __init__(self, row, col):
+        pass
 
 class Match(object):
     '''
@@ -26,12 +30,12 @@ class Match(object):
     
     def update(self):
         self.ballrect = self.ballrect.move(self.speed)
-        if self.ballrect.left < 0 or self.ballrect.right > const.width:
+        if self.ballrect.left < 0 or self.ballrect.right > width:
             self.speed[0] = -self.speed[0]
-        if self.ballrect.top < 0 or self.ballrect.bottom > const.height:
+        if self.ballrect.top < 0 or self.ballrect.bottom > height:
             self.speed[1] = -self.speed[1]
             
     def draw(self):
-        self.screen.fill(const.WHITE)
+        self.screen.fill(WHITE)
         self.screen.blit(self.ball, self.ballrect)
         pygame.display.flip()

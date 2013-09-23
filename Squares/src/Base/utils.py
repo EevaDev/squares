@@ -8,6 +8,7 @@ import pygame, os
 CUR_DIR = os.path.dirname(__file__)
 IMG_DIR = os.path.join(CUR_DIR, '../../data/images/')
 SOUND_DIR = os.path.join(CUR_DIR, '../../data/sounds/')
+FONT_DIR = os.path.join(CUR_DIR, '../../data/fonts/')
 
 def load_image(name, colorkey=None):
     fullname = IMG_DIR + name
@@ -35,3 +36,11 @@ def load_sound(name):
         print 'Cannot load sound:', name
         raise SystemExit, message
     return sound
+
+def load_font(name, size):
+    try:
+        font = pygame.font.Font(FONT_DIR + name, size)
+    except pygame.error, message:
+        print 'Cannot load font: ', name
+        raise SystemExit, message
+    return font
