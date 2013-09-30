@@ -7,12 +7,14 @@ import pygame, sys
 import start_menu, match
 from constants import *
 
+# Check if pygame' modules are initialized
 if not pygame.font: print 'Warning, fonts disabled'
 if not pygame.mixer: print 'Warning, sound disabled'
 
- 
+# Size of the screen
 size = (width, height) = (320, 240)
  
+# If main.py is the main file called, run the game
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(size)
@@ -25,13 +27,14 @@ if __name__ == '__main__':
      
     while True:
         clock.tick(30)
+        ## HANDLE EVENTS
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit(0)
             else:
                 state = cur_screen.handle_event(event)
-                
+        # Change state/screen if necessary
         if old_state != state:
             if state == STATE_MENU:
                 cur_screen = start_menu.StartMenu(screen)
@@ -42,7 +45,9 @@ if __name__ == '__main__':
                 sys.exit(0)
         old_state = state
         
+        ## UPDATE GAME
         cur_screen.update()
         
+        ## DRAW SCREEN
         cur_screen.draw()
     
