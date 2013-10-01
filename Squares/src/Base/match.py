@@ -97,6 +97,7 @@ class Match(object):
         self.chain_sorted = {} # Useful dictionary to be used when deleting squares
         self.all_same_color = [] # All squares not in chain to be deleted because of a BigSquare
         self.before_square = None # To store the last place before a square was composed
+        self.count_after_square = 0
     
     def _organize_chain(self):
         '''
@@ -107,7 +108,8 @@ class Match(object):
         self.chain_sorted = {} 
         for (row,col) in self.chain:
             if col in self.chain_sorted.keys():
-                self.chain_sorted[col].append(row)
+                if not row in self.chain_sorted[col]:
+                    self.chain_sorted[col].append(row)
             else:
                 self.chain_sorted[col] = [row]
         
@@ -179,8 +181,7 @@ class Match(object):
                     # If mouse is over a square of the color that is currently selected 
                     if square.isOver(mouse_pos) and square.get_color()==self.current_color:
                         # If mouse is over a square which is already selected (and it has not moved back) it means we have a big square
-                        if len(self.chain) >= 2 and square.isSelected() and (new_row, new_col) != self.chain[-2]:
-                            # TODO: If I go back and forward again there is a problem
+                        if len(self.chain) > 3 and square.isSelected() and (new_row, new_col) != self.chain[-2] and self.count_after_square == 0:
                             self.before_square = self.chain[-1]
                             self.chain.append((new_row,new_col))
                             self.all_same_color = []
@@ -192,7 +193,14 @@ class Match(object):
                                     if sx.get_color() == self.current_color:
                                         sx.select()
                                         self.all_same_color.append((rx, cx))
+                            self.count_after_square = 1
                         # If mouse is over a square of the right color, which is not selected, select it and add it to the chain
+                        elif len(self.chain) >= 2:
+                            if (new_row, new_col) != self.chain[-2]:
+                                square.select()
+                                self.chain.append((new_row,new_col))
+                            if self.before_square is not None:
+                                self.count_after_square += 1
                         elif not square.isSelected():
                             square.select()
                             self.chain.append((new_row,new_col))
@@ -204,7 +212,12 @@ class Match(object):
                                 for (r,c) in self.all_same_color:
                                     if (r,c) not in self.chain: # This shouldn't be necessary if squares in all_same color aren't in chain
                                         self.table[r][c].deselect()
+                                self.before_square = None
+                                self.count_after_square = 0
                                 self.all_same_color = []
+                                self.chain.pop(-1)
+                            elif self.count_after_square > 0:
+                                self.chain.pop(-1)
                             # Check if mouse moved back and square must be deselected and removed from chain
                             else:
                                 self.table[cur_row][cur_col].deselect()
