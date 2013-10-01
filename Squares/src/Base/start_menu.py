@@ -67,8 +67,8 @@ class StartMenu(object):
                 state = STATE_EXIT
         return state
     
-    def update(self):
-        pass
+    def update(self, state):
+        return state
             
     def draw(self):
         '''

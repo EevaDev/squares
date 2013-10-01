@@ -34,19 +34,20 @@ if __name__ == '__main__':
                 sys.exit(0)
             else:
                 state = cur_screen.handle_event(event)
+        
+        ## UPDATE GAME
+        state = cur_screen.update(state)
+        
         # Change state/screen if necessary
         if old_state != state:
             if state == STATE_MENU:
                 cur_screen = start_menu.StartMenu(screen)
             elif state == STATE_PLAY:
-                cur_screen = match.Match(screen)
+                cur_screen = match.Match(screen, MODE_MOVE)
             elif state == STATE_EXIT:
                 pygame.quit()
                 sys.exit(0)
         old_state = state
-        
-        ## UPDATE GAME
-        cur_screen.update()
         
         ## DRAW SCREEN
         cur_screen.draw()

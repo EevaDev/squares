@@ -79,7 +79,7 @@ class Match(object):
     '''
 
 
-    def __init__(self, screen):
+    def __init__(self, screen, mode):
         '''
         Constructor
         
@@ -91,6 +91,11 @@ class Match(object):
             for c in range(TAB_W):
                 self.table[r].append(Square(r,c))
         self.screen = screen
+        self.mode = mode
+        self.score = 0
+        self.moves = 0
+        
+        # Variables to handle the gameplay
         self.button_down = False # Is the mouse left button clicked?
         self.current_color = (0,0,0) # Color being selected after a mouse click
         self.chain = [] # Chain of selected squares
@@ -156,6 +161,10 @@ class Match(object):
                                 self.table[j][col] = self.table[j-1][col]
                                 self.table[j][col].slide()
                         del(tmp)
+                        # Increment score
+                        self.score += 1
+                # Increment used moves
+                self.moves += 1
             # No interesting chain, then deselect the inly square and do nothing else
             elif len(self.chain) == 1:
                 self.table[self.chain[0][0]][self.chain[0][1]].deselect()
@@ -165,8 +174,9 @@ class Match(object):
             self.chain = []
             self.all_same_color = []
             self.before_square = None
+            self.count_after_square = 0
     
-    def update(self):
+    def update(self, state):
         '''
         While the button is down keep selecting squares of the same color and identify big squares
         '''
@@ -222,7 +232,19 @@ class Match(object):
                             else:
                                 self.table[cur_row][cur_col].deselect()
                                 self.chain.pop(-1)
-                                
+        
+        if self.mode == MODE_MOVE and self.moves >= MAX_MOVES: 
+            match_over = True
+        elif self.mode == MODE_TIME and self.moves >= MAX_TIME:
+            match_over = True
+        else:
+            match_over = False
+            
+        if match_over:        
+            return STATE_MENU
+        else:
+            return state
+    
     def draw(self):
         '''
         Draw the entire table 

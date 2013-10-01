@@ -20,6 +20,13 @@ STATE_MENU = 0
 STATE_PLAY = 1
 STATE_EXIT = 2
 
+# Gameplay modes
+MODE_MOVE = 0
+MODE_TIME = 1
+
+MAX_TIME = 60
+MAX_MOVES = 3
+
 # Table and squares parameters
 TAB_W = 6
 TAB_H = 6
