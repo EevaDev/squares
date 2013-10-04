@@ -48,9 +48,10 @@ class StartMenu(object):
         '''
         self.screen = screen
         font = utils.load_font("ka1.ttf", 20)
-        startItem = MenuItem("Start", font) 
+        startMovesItem = MenuItem("Moves Mode", font)
+        startTimeItem = MenuItem("Time Mode", font)  
         exitItem = MenuItem("Exit", font)
-        self.items = (startItem, exitItem)
+        self.items = (startMovesItem, startTimeItem, exitItem)
         for i in range(len(self.items)):
             self.items[i].setPos(screen.get_width()/2, 30*(i+1))
         
@@ -62,8 +63,10 @@ class StartMenu(object):
         state = STATE_MENU
         if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
             if self.items[0].isClicked(pygame.mouse.get_pos()):
-                state = STATE_PLAY
+                state = STATE_MOVES
             elif self.items[1].isClicked(pygame.mouse.get_pos()):
+                state = STATE_TIME
+            elif self.items[2].isClicked(pygame.mouse.get_pos()):
                 state = STATE_EXIT
         return state
     

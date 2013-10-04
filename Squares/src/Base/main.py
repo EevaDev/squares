@@ -42,8 +42,10 @@ if __name__ == '__main__':
         if old_state != state:
             if state == STATE_MENU:
                 cur_screen = start_menu.StartMenu(screen)
-            elif state == STATE_PLAY:
+            elif state == STATE_MOVES:
                 cur_screen = match.Match(screen, MODE_MOVE)
+            elif state == STATE_TIME:
+                cur_sceen = match.Match(screen, MODE_TIME)
             elif state == STATE_EXIT:
                 pygame.quit()
                 sys.exit(0)

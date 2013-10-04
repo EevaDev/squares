@@ -6,6 +6,7 @@ Created on 2013-09-21
 import pygame
 import random
 from constants import *
+import time
 
 class Square(object):
     '''
@@ -85,6 +86,7 @@ class Match(object):
         
         Create table to play match a and all necessary variables
         '''
+        print mode
         self.table = [] # Table of squares
         for r in range(TAB_H):
             self.table.append([])
@@ -94,6 +96,7 @@ class Match(object):
         self.mode = mode
         self.score = 0
         self.moves = 0
+        self.start_time = time.time()
         
         # Variables to handle the gameplay
         self.button_down = False # Is the mouse left button clicked?
@@ -232,11 +235,16 @@ class Match(object):
                             else:
                                 self.table[cur_row][cur_col].deselect()
                                 self.chain.pop(-1)
+#         if self.mode == MODE_MOVE:
+#             print (MAX_MOVES - self.moves)
+#         elif self.mode == MODE_TIME:
+#             print (time.time() - self.start_time)
         
         if self.mode == MODE_MOVE and self.moves >= MAX_MOVES: 
-            match_over = True
-        elif self.mode == MODE_TIME and self.moves >= MAX_TIME:
-            match_over = True
+            match_over = True 
+        elif self.mode == MODE_TIME and time.time()-self.start_time >= MAX_TIME:
+            print "over"
+            match_over = False
         else:
             match_over = False
             
@@ -249,6 +257,8 @@ class Match(object):
         '''
         Draw the entire table 
         '''
+        print "draw"
+        print self.mode
         self.screen.fill(WHITE)
         for row in range(TAB_H):
             for square in self.table[row]:

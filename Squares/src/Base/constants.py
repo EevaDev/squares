@@ -17,14 +17,15 @@ square_colors = {
 }
 
 STATE_MENU = 0
-STATE_PLAY = 1
-STATE_EXIT = 2
+STATE_MOVES = 1
+STATE_TIME = 2
+STATE_EXIT = 3
 
 # Gameplay modes
 MODE_MOVE = 0
 MODE_TIME = 1
 
-MAX_TIME = 60
+MAX_TIME = 10
 MAX_MOVES = 3
 
 # Table and squares parameters
