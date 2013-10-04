@@ -45,7 +45,7 @@ if __name__ == '__main__':
             elif state == STATE_MOVES:
                 cur_screen = match.Match(screen, MODE_MOVE)
             elif state == STATE_TIME:
-                cur_sceen = match.Match(screen, MODE_TIME)
+                cur_screen = match.Match(screen, MODE_TIME)
             elif state == STATE_EXIT:
                 pygame.quit()
                 sys.exit(0)

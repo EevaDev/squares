@@ -235,16 +235,11 @@ class Match(object):
                             else:
                                 self.table[cur_row][cur_col].deselect()
                                 self.chain.pop(-1)
-#         if self.mode == MODE_MOVE:
-#             print (MAX_MOVES - self.moves)
-#         elif self.mode == MODE_TIME:
-#             print (time.time() - self.start_time)
         
         if self.mode == MODE_MOVE and self.moves >= MAX_MOVES: 
             match_over = True 
         elif self.mode == MODE_TIME and time.time()-self.start_time >= MAX_TIME:
-            print "over"
-            match_over = False
+            match_over = True
         else:
             match_over = False
             
