@@ -71,8 +71,8 @@ class Square(object):
         pygame.draw.rect(screen, self.color, self.rect)
         if self.selected:
             pygame.draw.rect(screen, self.color, self.detect_rect)
-        else:
-            pygame.draw.rect(screen, self.color, self.detect_rect, 1)
+#         else:
+#             pygame.draw.rect(screen, self.color, self.detect_rect, 1)
 
 class Match(object):
     '''
@@ -86,7 +86,6 @@ class Match(object):
         
         Create table to play match a and all necessary variables
         '''
-        print mode
         self.table = [] # Table of squares
         for r in range(TAB_H):
             self.table.append([])
@@ -244,16 +243,17 @@ class Match(object):
             match_over = False
             
         if match_over:        
-            return STATE_MENU
+            return STATE_RESULT
         else:
             return state
+        
+    def get_score(self):
+        return self.score
     
     def draw(self):
         '''
         Draw the entire table 
         '''
-        print "draw"
-        print self.mode
         self.screen.fill(WHITE)
         for row in range(TAB_H):
             for square in self.table[row]:

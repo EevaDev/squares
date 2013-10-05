@@ -81,3 +81,45 @@ class StartMenu(object):
         for item in self.items:
             item.draw(self.screen)
         pygame.display.flip()
+    
+
+class EndMenu(object):
+    '''
+    Main Menu of the game
+    '''
+    def __init__(self, screen, score):
+        '''
+        Constructor
+        Initialisation of all items and determine position 
+        '''
+        self.screen = screen
+        font = utils.load_font("ka1.ttf", 20)
+        scoreItem = MenuItem(str(score), font)
+        backItem = MenuItem("Back", font)
+        self.items = (scoreItem, backItem)
+        for i in range(len(self.items)):
+            self.items[i].setPos(screen.get_width()/2, 30*(i+1))
+        
+        
+    def handle_event(self, ev):
+        '''
+        Handle mouse clicks to determine if one of the menu items has been selected
+        '''
+        state = STATE_RESULT
+        if ev.type == pygame.MOUSEBUTTONDOWN and ev.button == 1:
+            if self.items[1].isClicked(pygame.mouse.get_pos()):
+                state = STATE_MENU
+        return state
+    
+    def update(self, state):
+        return state
+            
+    def draw(self):
+        '''
+        Draw menu to screen
+        '''
+        self.screen.fill(WHITE)
+        for item in self.items:
+            item.draw(self.screen)
+        pygame.display.flip()
+        

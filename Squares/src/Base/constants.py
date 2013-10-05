@@ -5,6 +5,7 @@ Created on 2013-09-22
 '''
 
 size = (width, height) = (320, 240)
+TABLE_SIZE = (tab_w, tab_h) = (200, 200)
 BLACK = (0, 0, 0)
 WHITE = (255,255,255)
 
@@ -20,6 +21,7 @@ STATE_MENU = 0
 STATE_MOVES = 1
 STATE_TIME = 2
 STATE_EXIT = 3
+STATE_RESULT = 4
 
 # Gameplay modes
 MODE_MOVE = 0
@@ -32,6 +34,6 @@ MAX_MOVES = 3
 TAB_W = 6
 TAB_H = 6
 
-S_SIZE = 10
-S_DETECT_SIZE = 22
+S_SIZE = 18
+S_DETECT_SIZE = 24
 S_DISTANCE = 30

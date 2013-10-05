@@ -46,6 +46,9 @@ if __name__ == '__main__':
                 cur_screen = match.Match(screen, MODE_MOVE)
             elif state == STATE_TIME:
                 cur_screen = match.Match(screen, MODE_TIME)
+            elif state == STATE_RESULT:
+                score = cur_screen.get_score()
+                cur_screen = start_menu.EndMenu(screen, score)
             elif state == STATE_EXIT:
                 pygame.quit()
                 sys.exit(0)
