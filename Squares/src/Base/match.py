@@ -6,7 +6,35 @@ Created on 2013-09-21
 import pygame
 import random
 from constants import *
+import utils
 import time
+
+class TextItem(object):
+    '''
+    Any Text Item. This class provides methods for positioning and display
+    '''
+    def __init__(self, text, font, posX, posY):
+        '''
+        Constructor
+        '''
+        self.font = font
+        self.text = font.render(text, 1, TITLE_BLUE)
+        self.xCenter = posX
+        self.yCenter = posY
+    
+    def setPos(self, posX, posY):
+        '''Set item position on the screen'''
+        self.yCenter = posY
+        self.xCenter = posX
+        
+    def setText(self, text):
+        '''Change the text to be rendered'''
+        self.text = self.font.render(text, 1, square_colors['blue'])
+        
+    def draw(self, screen):
+        '''Draw item'''
+        self.position = self.text.get_rect(centery=self.yCenter, centerx=self.xCenter)
+        screen.blit(self.text, self.position)
 
 class Square(object):
     '''
@@ -29,14 +57,16 @@ class Square(object):
             else:
                 color_selected = True
         # Set position and create the Rects which identify the square 
-        self.x = (col+1)*S_DISTANCE
-        self.y = (row+1)*S_DISTANCE
+        self.x = OFF_X + (col)*S_DISTANCE
+        self.y = OFF_Y + (row)*S_DISTANCE
         self.width = S_SIZE
         self.rect = pygame.Rect(self.x,self.y,self.width,self.width)
         self.detect_rect = pygame.Rect(self.x-(S_DETECT_SIZE-S_SIZE)/2, 
                                        self.y-(S_DETECT_SIZE-S_SIZE)/2,
                                        S_DETECT_SIZE, S_DETECT_SIZE)
         self.selected = False # Is the square selected?
+        self.destination = self.y # For the sliding
+        self.sliding = False
     
     def get_color(self):
         '''Just return the color of the square'''
@@ -44,11 +74,32 @@ class Square(object):
     
     def slide(self):
         '''Move the square down one position'''
-        self.y += S_DISTANCE
+        if self.sliding:
+            self.destination += S_DISTANCE
+        else:
+            self.destination = self.y + S_DISTANCE
+            self.y += SLIDE_SPEED
+            self.sliding = True
         self.rect = pygame.Rect(self.x,self.y,self.width,self.width)
         self.detect_rect = pygame.Rect(self.x-(S_DETECT_SIZE-S_SIZE)/2, 
                                        self.y-(S_DETECT_SIZE-S_SIZE)/2,
                                        S_DETECT_SIZE, S_DETECT_SIZE)
+        
+    def update(self):
+        # If destination is not reached, move it
+        if self.sliding:
+            if self.y < self.destination:
+                self.y += SLIDE_SPEED
+                if self.y > self.destination:
+                    self.y = self.destination
+                    self.sliding = False
+                self.rect = pygame.Rect(self.x,self.y,self.width,self.width)
+                self.detect_rect = pygame.Rect(self.x-(S_DETECT_SIZE-S_SIZE)/2, 
+                                               self.y-(S_DETECT_SIZE-S_SIZE)/2,
+                                               S_DETECT_SIZE, S_DETECT_SIZE)
+            else:
+                self.sliding = False
+                self.y = self.destination
 
     def isSelected(self):
         '''Return True if the square has been previously selected'''
@@ -86,6 +137,20 @@ class Match(object):
         
         Create table to play match a and all necessary variables
         '''
+        # Texts
+        font = utils.load_font("monof55.ttf", 18)
+        font_big = utils.load_font("monof55.ttf", 22)
+        score = TextItem("Score", font_big, INFO_X, SCORE_Y)
+        score_val = TextItem("0", font, INFO_X, SCORE_VAL_Y)
+        self.texts = [score, score_val]
+        if mode == MODE_MOVE:
+            self.texts.append(TextItem("Moves", font_big, INFO_X, COUNT_Y))
+            self.texts.append(TextItem(str(MAX_MOVES), font, INFO_X, COUNT_VAL_Y))
+        elif mode == MODE_TIME:
+            self.texts.append(TextItem("Time", font_big, INFO_X, COUNT_Y))
+            self.texts.append(TextItem(str(MAX_TIME), font, INFO_X, COUNT_VAL_Y))
+            
+        
         self.table = [] # Table of squares
         for r in range(TAB_H):
             self.table.append([])
@@ -119,6 +184,44 @@ class Match(object):
                     self.chain_sorted[col].append(row)
             else:
                 self.chain_sorted[col] = [row]
+                
+    def _check_combinations(self):
+        '''
+        Check if there is at least one possible combination
+        Return False when there is none
+        '''
+        potential_move = False
+        to_check = []
+        for r in range(0,TAB_H):
+            for c in range(0,TAB_W):
+                square = self.table[r][c]
+                if c != 0:
+                    to_check.append(self.table[r][c-1])
+                if c != TAB_W-1:
+                    to_check.append(self.table[r][c+1])
+                if r != 0:
+                    to_check.append(self.table[r-1][c])
+                if r != TAB_H-1:
+                    to_check.append(self.table[r+1][c])
+                for s in to_check:
+                    if square.get_color() == s.get_color():
+                        potential_move = True
+                if potential_move:
+                    return True
+                else: 
+                    to_check = []
+        return False
+    
+    def _delete_line(self, line):
+        for c in range(TAB_W):
+            # Delete square in line, and slide all those above down
+            tmp = self.table[line][c]
+            for j in range(line, 0, -1):
+                self.table[j][c] = self.table[j-1][c]
+                self.table[j][c].slide()    
+            del(tmp)
+            # Create new square in line 0
+            self.table[0][c] = Square(0,c)
         
     def handle_event(self, ev):
         '''
@@ -177,6 +280,14 @@ class Match(object):
             self.all_same_color = []
             self.before_square = None
             self.count_after_square = 0
+            
+            # Check if there are possible moves
+            while not self._check_combinations():
+                self._delete_line(TAB_H-2)
+            
+            self.texts[1].setText(str(self.score))
+            if self.mode == MODE_MOVE:
+                self.texts[3].setText(str(MAX_MOVES-self.moves))
     
     def update(self, state):
         '''
@@ -234,6 +345,15 @@ class Match(object):
                             else:
                                 self.table[cur_row][cur_col].deselect()
                                 self.chain.pop(-1)
+                                
+        # Move all sliding squares
+        for r in range(0,TAB_H):
+            for c in range(0,TAB_W):
+                self.table[r][c].update()
+        
+        
+        if self.mode == MODE_TIME:
+            self.texts[3].setText(str(int(MAX_TIME + 1 - (time.time()-self.start_time))))
         
         if self.mode == MODE_MOVE and self.moves >= MAX_MOVES: 
             match_over = True 
@@ -254,8 +374,10 @@ class Match(object):
         '''
         Draw the entire table 
         '''
-        self.screen.fill(WHITE)
+        self.screen.fill(GREY)
         for row in range(TAB_H):
             for square in self.table[row]:
                 square.draw(self.screen)
+        for t in self.texts:
+            t.draw(self.screen)
         pygame.display.flip()

@@ -18,7 +18,7 @@ size = (width, height) = (320, 240)
 if __name__ == '__main__':
     pygame.init()
     screen = pygame.display.set_mode(size)
-    pygame.display.set_caption("First Python Game")
+    pygame.display.set_caption("Squares")
     
     clock = pygame.time.Clock()
     cur_screen = start_menu.StartMenu(screen)

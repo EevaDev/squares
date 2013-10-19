@@ -15,15 +15,19 @@ class MenuItem(object):
         '''
         Constructor
         '''
-        self.text = font.render(text, 1, (50, 50, 200))
+        self.text = font.render(text, 1, TITLE_BLUE)
         self.yCenter = 10
         self.xCenter = 10
         self.isOver = False
+        self.back_color = square_colors['green']
     
     def setPos(self, posX, posY):
         '''Set item position on the screen'''
         self.yCenter = posY
         self.xCenter = posX
+        
+    def setBackCol(self, col):
+        self.back_color = col
         
     def setOver(self, value):
         self.isOver = value
@@ -39,7 +43,10 @@ class MenuItem(object):
     def draw(self, screen):
         '''Draw item'''
         if self.isOver:
-            pygame.draw.rect(screen, (200,200,200), self.position)
+            back_rect = pygame.Rect(self.position)
+            back_rect.width = 250
+            back_rect.centerx = self.xCenter
+            pygame.draw.rect(screen, self.back_color, back_rect)
         self.position = self.text.get_rect(centery=self.yCenter, centerx=self.xCenter)
         screen.blit(self.text, self.position)
 
@@ -54,8 +61,8 @@ class StartMenu(object):
         '''
         self.screen = screen
         font_title = utils.load_font("ka1.ttf", 25)
-        font = utils.load_font("technoid.ttf", 20)
-        font.set_bold(True)
+        font = utils.load_font("monof55.ttf", 20)
+        #font.set_bold(True)
         title = MenuItem("SQUARES", font_title)
         startMovesItem = MenuItem("Moves Mode", font)
         startTimeItem = MenuItem("Time Mode", font)  
@@ -63,9 +70,11 @@ class StartMenu(object):
         self.items = (title, startMovesItem, startTimeItem, exitItem)
         for i in range(len(self.items)):
             if i == 0:
-                self.items[i].setPos(screen.get_width()/2, 50)
+                self.items[i].setPos(screen.get_width()/2, 60)
             else:
+                colors = ['azzurro','azzurro','green','orange','red']
                 self.items[i].setPos(screen.get_width()/2, 20*(i+4))
+                self.items[i].setBackCol(square_colors[colors[i]])
                 
         self.over_option = None
         
@@ -102,7 +111,7 @@ class StartMenu(object):
         '''
         Draw menu to screen
         '''
-        self.screen.fill(WHITE)
+        self.screen.fill(GREY)
         for item in self.items:
             item.draw(self.screen)
         pygame.display.flip()
@@ -143,7 +152,7 @@ class EndMenu(object):
         '''
         Draw menu to screen
         '''
-        self.screen.fill(WHITE)
+        self.screen.fill(GREY)
         for item in self.items:
             item.draw(self.screen)
         pygame.display.flip()
