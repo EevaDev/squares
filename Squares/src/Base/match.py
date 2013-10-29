@@ -56,17 +56,22 @@ class Square(object):
                     color_selected = True
             else:
                 color_selected = True
-        # Set position and create the Rects which identify the square 
-        self.x = OFF_X + (col)*S_DISTANCE
-        self.y = OFF_Y + (row)*S_DISTANCE
+        # Set position and create the Rects which identify the square
+        self.x = OFF_X + (col)*S_DISTANCE 
+        if row != 0:
+            self.y = OFF_Y + (row)*S_DISTANCE
+            self.destination = self.y # For the sliding
+            self.sliding = False
+        else:
+            self.y = OFF_Y + (row-1)*S_DISTANCE
+            self.destination = OFF_Y + (row)*S_DISTANCE
+            self.sliding = True
         self.width = S_SIZE
         self.rect = pygame.Rect(self.x,self.y,self.width,self.width)
         self.detect_rect = pygame.Rect(self.x-(S_DETECT_SIZE-S_SIZE)/2, 
                                        self.y-(S_DETECT_SIZE-S_SIZE)/2,
                                        S_DETECT_SIZE, S_DETECT_SIZE)
         self.selected = False # Is the square selected?
-        self.destination = self.y # For the sliding
-        self.sliding = False
     
     def get_color(self):
         '''Just return the color of the square'''
@@ -149,6 +154,8 @@ class Match(object):
         elif mode == MODE_TIME:
             self.texts.append(TextItem("Time", font_big, INFO_X, COUNT_Y))
             self.texts.append(TextItem(str(MAX_TIME), font, INFO_X, COUNT_VAL_Y))
+        self.move_sound = utils.load_sound("move.wav")
+        self.square_sound = utils.load_sound("square.wav")
             
         
         self.table = [] # Table of squares
@@ -270,6 +277,10 @@ class Match(object):
                         self.score += 1
                 # Increment used moves
                 self.moves += 1
+                if self.before_square is None:
+                    self.move_sound.play()
+                else:
+                    self.square_sound.play()
             # No interesting chain, then deselect the inly square and do nothing else
             elif len(self.chain) == 1:
                 self.table[self.chain[0][0]][self.chain[0][1]].deselect()
